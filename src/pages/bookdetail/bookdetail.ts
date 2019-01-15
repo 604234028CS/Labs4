@@ -1,45 +1,44 @@
-import { BookdetailPage } from './../bookdetail/bookdetail';
-
 import { Book } from './../models/book.model';
 import { BookRestProvider } from './../../providers/book-rest/book-rest';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+/**
+ * Generated class for the BookdetailPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
 
 @Component({
-  selector: 'page-book-list',
-  templateUrl: 'book-list.html',
+  selector: 'page-bookdetail',
+  templateUrl: 'bookdetail.html',
 })
-export class BookListPage {
+export class BookdetailPage {
 
-  books:Book;
-  category:string;
+  bookid:number;
+  book:Book;
+
 
   constructor(public bookrest:BookRestProvider,public navCtrl:NavController, public navParams: NavParams) {
   }
 
   ionViewWillEnter(){
-    this.category=this.navParams.get("category");
+    this.bookid=this.navParams.get("bookid");
     this.bookrest.getbookList().subscribe(data=>{
-      this.books=data.filter(book => book.category == this.category);
+      this.book=data.filter(book => book.bookid == this.bookid)[0];
     });
   
   }
 
+
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BookListPage');
+    this.bookid=this.navParams.get("bookid");
+    console.log(this.bookid);
   }
-
-
+ 
+  
   goBack(){
     this.navCtrl.pop();
   }
-
-
-  showDetail(bookid:number){
-    this.navCtrl.push(BookdetailPage,
-      {bookid:bookid}
-    );
-  }
-
 }
